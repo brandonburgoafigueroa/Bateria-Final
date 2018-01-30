@@ -1,7 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:minWidth="25px"
+    android:minHeight="25px"
+    tools:actionBarNavMode="tabs"
+    tools:gridSpec="1|8|#0093eeff|K:#ee8700ff:16,l:72,l:16,r|S:#83ee00ff:16,0,l:16,56,l:16,0,r">
+    <TableLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tableLayout1">
+        <TableRow
+            android:id="@+id/tableRow1">
+            <TextView
+                android:text="Carga inicial"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_column="0"
+                android:id="@+id/InitialCharge" />
+            <Space
+                android:layout_column="1"
+                android:id="@+id/space1" />
+            <TextView
+                android:text="Carga Final"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_column="3"
+                android:id="@+id/FinalCharge" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow2">
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_column="0"
+                android:id="@+id/InitialChargerValue" />
+            <Space
+                android:layout_column="1"
+                android:id="@+id/space2" />
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_column="3"
+                android:id="@+id/FinalChargerValue" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow4">
+            <TextView
+                android:text="Tiempo Transcurrido"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_column="0"
+                android:id="@+id/Time" />
+            <Space
+                android:layout_column="1"
+                android:id="@+id/space3" />
+            <TextView
+                android:text="Velocidad"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_column="3"
+                android:id="@+id/PercentByMinute" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow5">
+            <Space
+                android:layout_column="1"
+                android:id="@+id/space4" />
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_column="3"
+                android:id="@+id/PercentByMinute" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow6">
+            <Space
+                android:layout_column="1"
+                android:id="@+id/space6" />
+        </TableRow>
+        <TableRow
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:id="@+id/tableRow9">
+        </TableRow>
+        <TableRow
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:id="@+id/tableRow10">
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow11">
+            <TextView
+                android:text="Precisión"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_column="0"
+                android:id="@+id/PresissionText" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow12">
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_column="0"
+                android:id="@+id/PrecisionValue" />
+        </TableRow>
+        <TableRow
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:id="@+id/tableRow7">
+            <Space
+                android:layout_column="1"
+                android:id="@+id/space7" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow8">
+            <Button
+                android:text="Comenzar"
+                android:layout_column="0"
+                android:id="@+id/Start"
+                android:layout_width="149.0dp" />
+            <Space
+                android:layout_column="1"
+                android:id="@+id/space5" />
+            <Button
+                android:text="Cancelar"
+                android:layout_column="3"
+                android:id="@+id/Cancel" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow3">
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_column="0"
+                android:id="@+id/TimeValue" />
+        </TableRow>
+    </TableLayout>
 </LinearLayout>
