@@ -76,8 +76,8 @@ namespace BatteryFinal
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f07001c
-			public const int Cancel = 2131165212;
+			// aapt resource value: 0x7f07001e
+			public const int Cancel = 2131165214;
 			
 			// aapt resource value: 0x7f070004
 			public const int FinalCharge = 2131165188;
@@ -94,20 +94,23 @@ namespace BatteryFinal
 			// aapt resource value: 0x7f07000c
 			public const int PercentByMinute = 2131165196;
 			
+			// aapt resource value: 0x7f070010
+			public const int PercentByMinuteValue = 2131165200;
+			
+			// aapt resource value: 0x7f070018
+			public const int PrecisionValue = 2131165208;
+			
 			// aapt resource value: 0x7f070016
-			public const int PrecisionValue = 2131165206;
+			public const int PresissionText = 2131165206;
 			
-			// aapt resource value: 0x7f070014
-			public const int PresissionText = 2131165204;
-			
-			// aapt resource value: 0x7f07001a
-			public const int Start = 2131165210;
+			// aapt resource value: 0x7f07001c
+			public const int Start = 2131165212;
 			
 			// aapt resource value: 0x7f07000a
 			public const int Time = 2131165194;
 			
-			// aapt resource value: 0x7f07001e
-			public const int TimeValue = 2131165214;
+			// aapt resource value: 0x7f07000e
+			public const int TimeValue = 2131165198;
 			
 			// aapt resource value: 0x7f070003
 			public const int space1 = 2131165187;
@@ -118,17 +121,17 @@ namespace BatteryFinal
 			// aapt resource value: 0x7f07000b
 			public const int space3 = 2131165195;
 			
-			// aapt resource value: 0x7f07000e
-			public const int space4 = 2131165198;
+			// aapt resource value: 0x7f07000f
+			public const int space4 = 2131165199;
 			
-			// aapt resource value: 0x7f07001b
-			public const int space5 = 2131165211;
+			// aapt resource value: 0x7f07001d
+			public const int space5 = 2131165213;
 			
-			// aapt resource value: 0x7f070010
-			public const int space6 = 2131165200;
+			// aapt resource value: 0x7f070012
+			public const int space6 = 2131165202;
 			
-			// aapt resource value: 0x7f070018
-			public const int space7 = 2131165208;
+			// aapt resource value: 0x7f07001a
+			public const int space7 = 2131165210;
 			
 			// aapt resource value: 0x7f070000
 			public const int tableLayout1 = 2131165184;
@@ -136,20 +139,20 @@ namespace BatteryFinal
 			// aapt resource value: 0x7f070001
 			public const int tableRow1 = 2131165185;
 			
-			// aapt resource value: 0x7f070012
-			public const int tableRow10 = 2131165202;
-			
-			// aapt resource value: 0x7f070013
-			public const int tableRow11 = 2131165203;
+			// aapt resource value: 0x7f070014
+			public const int tableRow10 = 2131165204;
 			
 			// aapt resource value: 0x7f070015
-			public const int tableRow12 = 2131165205;
+			public const int tableRow11 = 2131165205;
+			
+			// aapt resource value: 0x7f070017
+			public const int tableRow12 = 2131165207;
 			
 			// aapt resource value: 0x7f070005
 			public const int tableRow2 = 2131165189;
 			
-			// aapt resource value: 0x7f07001d
-			public const int tableRow3 = 2131165213;
+			// aapt resource value: 0x7f07001f
+			public const int tableRow3 = 2131165215;
 			
 			// aapt resource value: 0x7f070009
 			public const int tableRow4 = 2131165193;
@@ -157,17 +160,17 @@ namespace BatteryFinal
 			// aapt resource value: 0x7f07000d
 			public const int tableRow5 = 2131165197;
 			
-			// aapt resource value: 0x7f07000f
-			public const int tableRow6 = 2131165199;
-			
-			// aapt resource value: 0x7f070017
-			public const int tableRow7 = 2131165207;
+			// aapt resource value: 0x7f070011
+			public const int tableRow6 = 2131165201;
 			
 			// aapt resource value: 0x7f070019
-			public const int tableRow8 = 2131165209;
+			public const int tableRow7 = 2131165209;
 			
-			// aapt resource value: 0x7f070011
-			public const int tableRow9 = 2131165201;
+			// aapt resource value: 0x7f07001b
+			public const int tableRow8 = 2131165211;
+			
+			// aapt resource value: 0x7f070013
+			public const int tableRow9 = 2131165203;
 			
 			static Id()
 			{

@@ -47,7 +47,7 @@
         <TableRow
             android:id="@+id/tableRow4">
             <TextView
-                android:text="Tiempo Transcurrido"
+                android:text="Tiempo Transcurrido          "
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_column="0"
                 android:id="@+id/Time" />
@@ -62,13 +62,17 @@
         </TableRow>
         <TableRow
             android:id="@+id/tableRow5">
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_column="0"
+                android:id="@+id/TimeValue" />
             <Space
                 android:layout_column="1"
                 android:id="@+id/space4" />
             <TextView
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_column="3"
-                android:id="@+id/PercentByMinute" />
+                android:id="@+id/PercentByMinuteValue" />
         </TableRow>
         <TableRow
             android:id="@+id/tableRow6">
@@ -126,10 +130,6 @@
         </TableRow>
         <TableRow
             android:id="@+id/tableRow3">
-            <TextView
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_column="0"
-                android:id="@+id/TimeValue" />
         </TableRow>
     </TableLayout>
 </LinearLayout>
