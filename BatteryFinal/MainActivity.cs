@@ -6,7 +6,7 @@ using System.Threading;
 using System;
 namespace BatteryFinal
 {
-    [Activity(Label = "BatteryFinal", MainLauncher = true, Icon = "@drawable/icon", Immersive = true)]
+    [Activity(Label = "Velocimetro de bateria", MainLauncher = true, Icon = "@drawable/icon", Immersive = true)]
     public class MainActivity : Activity
     {
         TextView FinalCharge;
@@ -21,7 +21,6 @@ namespace BatteryFinal
         Button Cancel;
         Button Start;
         Battery BatteryManager;
-        Thread UI;
         Thread Battery;
         Thread TimeTh;
         Thread ChargeNow;
@@ -34,8 +33,20 @@ namespace BatteryFinal
             base.OnCreate(bundle);
 
             // Set our view from the "main" layout resource
-            Timer = new Clock();
+            
             SetContentView(Resource.Layout.Main);
+            LoadElements();
+            LoadEvents();
+            LoadThreads();
+        }
+        private void LoadEvents()
+        {
+            Cancel.Click += Cancel_Click;
+            Start.Click += Start_Click;
+        }
+        private void LoadElements()
+        {
+            Timer = new Clock();
             BatteryManager = new Battery();
             FinalCharge = FindViewById<TextView>(Resource.Id.FinalCharge);
             FinalChargeValue = FindViewById<TextView>(Resource.Id.FinalChargerValue);
@@ -48,18 +59,24 @@ namespace BatteryFinal
             Time = FindViewById<TextView>(Resource.Id.Time);
             Cancel = FindViewById<Button>(Resource.Id.Cancel);
             Start = FindViewById<Button>(Resource.Id.Start);
-            Cancel.Click += Cancel_Click;
-            Start.Click += Start_Click;
-
         }
-
-        private void Start_Click(object sender, System.EventArgs e)
+        private void LoadTexts()
         {
-            Battery = new Thread(BatteryManager.Start);
-            Battery.Start();
-            Timer.Start();
-            UpdateUI();
+            RunOnUiThread(() =>
+            {
+                TimeValue.Text = Timer.GetFormatClock();
+                InitialChargeValue.Text = BatteryManager.InitialCharge.Value.ToString();
+                FinalChargeValue.Text = BatteryManager.ActualCharge.Value.ToString();
+                PrecisionValue.Text = BatteryManager.Status.Value.ToString();
+                PercentByMinute.Text = BatteryManager.Speed.Value.ToString() + ("% / Min");
 
+            });
+        }
+        private void Start_Click(object sender, System.EventArgs e)
+        {    
+            Battery.Start();
+            UpdateUI();
+            Timer.Start();
         }
         private void UpdateTime()
         {
@@ -77,11 +94,6 @@ namespace BatteryFinal
 
         private void UpdateBattery()
         {
-            RunOnUiThread(() =>
-            {
-                InitialChargeValue.Text = BatteryManager.InitialCharge.Value.ToString();
-                FinalChargeValue.Text = BatteryManager.ActualCharge.Value.ToString();
-            });
             while (true)
                 {
                 if (BatteryManager.ActualCharge.OnChange()) { 
@@ -96,11 +108,12 @@ namespace BatteryFinal
         }
         private void UpdatePresision()
         {
-
+            
             while (true)
             {
-                if (BatteryManager.Status.OnChange())
+                if (BatteryManager.ActualCharge.OnChange())
                 {
+                    BatteryManager.UpdateStatus();
                     RunOnUiThread(() =>
                     {
                         PrecisionValue.Text = BatteryManager.Status.Value.ToString();
@@ -112,8 +125,9 @@ namespace BatteryFinal
         {
             while (true)
             {
-                if (BatteryManager.Speed.OnChange())
+                if (BatteryManager.ActualCharge.OnChange())
                 {
+                    BatteryManager.Calculate(Timer.OnlySeconds());
                     RunOnUiThread(() =>
                     {
                         PercentByMinute.Text = BatteryManager.Speed.Value.ToString() + ("% / Min");
@@ -121,38 +135,43 @@ namespace BatteryFinal
                 }
             }
         }
-     
-        
+     private void LoadThreads()
+        {
+            TimeTh = new Thread(() => UpdateTime());
+            ChargeNow = new Thread(() => UpdateBattery());
+            Pressision = new Thread(() => UpdatePresision());
+            Speed = new Thread(() => UpdateSpeed());
+            Battery = new Thread(BatteryManager.Start);
+        }
+        private void StartThreads()
+        {
+            TimeTh.Start();
+            TimeTh.Priority = System.Threading.ThreadPriority.Highest;
+            ChargeNow.Start();
+            Pressision.Start();
+            Speed.Start();
+        }
         private void UpdateUI()
         {
-            TimeTh= new Thread(() => UpdateTime());
-            TimeTh.Start();
-            
-              ChargeNow = new Thread(() => UpdateBattery());
-              ChargeNow.Start();
-            /*Pressision=new Thread(() => UpdatePresision());
-               Pressision.Start();*/
-            Speed = new Thread(() => UpdateSpeed());
-            Speed.Start();
+            LoadTexts();
+            StartThreads();
         }
         private void DestroyThreads()
         {
-            try
-            {
-                TimeTh.Suspend();
-                TimeTh.Abort();
-                ChargeNow.Suspend();
-                ChargeNow.Abort();
-                Pressision.Suspend();
-                Pressision.Abort();
-                Speed.Suspend();
-                Speed.Abort();
-                UI.Abort();
-                Battery.Abort();
-            }
-            catch {
+            if (TimeTh.IsAlive)
+            { TimeTh.Abort(); }
 
-            }
+            if (ChargeNow.IsAlive)
+            { ChargeNow.Abort(); }
+
+            if (Pressision.IsAlive)
+            { Pressision.Abort(); }
+
+            if (Speed.IsAlive)
+            { Speed.Abort(); }
+
+            if (Battery.IsAlive)
+            { Battery.Abort(); }
         }
         
         private void Cancel_Click(object sender, System.EventArgs e)

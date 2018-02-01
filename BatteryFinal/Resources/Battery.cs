@@ -106,36 +106,40 @@ namespace BatteryFinal.Resources
             Speed.Value = 0;
             InitialCharge.Value = 0;
             ActualCharge.Value = 0;
+            Status.Value = Level.Low;
         }
         public void UpdateStatus()
         {
-            while (true)
-            {
-                if (InitialCharge.Value == ActualCharge.Value + 2)
-                {
-                    Status.Value = Level.High;
 
-                }
-                if (InitialCharge.Value == ActualCharge.Value + 1)
-                {
-                    Status.Value = Level.Medium;
-                }
-                if (InitialCharge.Value == ActualCharge.Value)
-                {
-                    Status.Value = Level.Low;
-                }
+            if (InitialCharge.Value == ActualCharge.Value - 4)
+            {
+                Status.Value = Level.High;
+
             }
+            else if (InitialCharge.Value == ActualCharge.Value - 2 || InitialCharge.Value == ActualCharge.Value - 3)
+            {
+                Status.Value = Level.Medium;
+            }
+            else if (InitialCharge.Value == ActualCharge.Value || InitialCharge.Value == ActualCharge.Value - 1)
+            {
+                Status.Value = Level.Low;
+            }
+           
+
         }
        public void UpdateLevel()
         {
             while (true)
             {
-                ActualCharge.Value = CrossBattery.Current.RemainingChargePercent;
+                //ActualCharge.Value = CrossBattery.Current.RemainingChargePercent;
+                ActualCharge.Value++;
+                Thread.Sleep(5000);
             }
         }
         public void Start()
         {
-            InitialCharge.Value = CrossBattery.Current.RemainingChargePercent;
+            //InitialCharge.Value = CrossBattery.Current.RemainingChargePercent;
+            InitialCharge.Value = 0;
             UpdateLevelActual = new Thread(() => UpdateLevel());
             UpdateLevelActual.Start();    
 
@@ -147,7 +151,7 @@ namespace BatteryFinal.Resources
         }
         public void Calculate(double Seconds)
         {
-            Speed.Value = ((ActualCharge.Value - InitialCharge.Value) / Seconds) * 60;
+            Speed.Value = ((ActualCharge.Value - InitialCharge.Value) / Seconds);
         }
     }
 }
