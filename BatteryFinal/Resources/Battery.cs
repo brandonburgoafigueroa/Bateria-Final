@@ -92,52 +92,53 @@ namespace BatteryFinal.Resources
     }
     class Battery
     {
-        public double InitialCharge { set; get; }
-        public double _FinalCharge { set; get; }
-        public bool ActualChargeOnChange { set; get; }
-        public double FinalCharge { set { } get { return _FinalCharge; } }
-        public double _Speed { set; get; }
-        public double Speed { set; get; }
-        public Level _Status { set; get; }
-        public Level Status { set; get; }
+        public Generic<double> InitialCharge;
+        public Generic<double> ActualCharge;
+        public Generic<double> Speed;
+        public Generic<Level> Status;
         private Thread UpdateLevelActual;
         public Battery()
         {
-            Speed = 0;
-            InitialCharge = 0;
-            FinalCharge = 0;
+            InitialCharge = new Generic<double>();
+            ActualCharge = new Generic<double>();
+            Speed = new Generic<double>();
+            Status = new Generic<Level>();
+            Speed.Value = 0;
+            InitialCharge.Value = 0;
+            ActualCharge.Value = 0;
         }
-        public void UpdateLevel()
+        public void UpdateStatus()
         {
-            while(true)
-            { 
-            FinalCharge = CrossBattery.Current.RemainingChargePercent;
-            Thread.Sleep(1000);
+            while (true)
+            {
+                if (InitialCharge.Value == ActualCharge.Value + 2)
+                {
+                    Status.Value = Level.High;
+
+                }
+                if (InitialCharge.Value == ActualCharge.Value + 1)
+                {
+                    Status.Value = Level.Medium;
+                }
+                if (InitialCharge.Value == ActualCharge.Value)
+                {
+                    Status.Value = Level.Low;
+                }
+            }
+        }
+       public void UpdateLevel()
+        {
+            while (true)
+            {
+                ActualCharge.Value = CrossBattery.Current.RemainingChargePercent;
             }
         }
         public void Start()
         {
-            InitialCharge = CrossBattery.Current.RemainingChargePercent;
-            bool active = true;
+            InitialCharge.Value = CrossBattery.Current.RemainingChargePercent;
             UpdateLevelActual = new Thread(() => UpdateLevel());
             UpdateLevelActual.Start();    
-            while(active)
-            {
-                if (InitialCharge == FinalCharge + 2)
-                {
-                    Status = Level.High;
-                    
-                }
-                if (InitialCharge == FinalCharge + 1)
-                {
-                    Status = Level.Medium;
-                } 
-                if (InitialCharge == FinalCharge)
-                {
-                    Status = Level.Low;
-                }
-               
-            }
+
         }
         public void Stop()
         {
@@ -146,7 +147,7 @@ namespace BatteryFinal.Resources
         }
         public void Calculate(double Seconds)
         {
-            Speed = ((FinalCharge - InitialCharge) / Seconds) * 60;
+            Speed.Value = ((ActualCharge.Value - InitialCharge.Value) / Seconds) * 60;
         }
     }
 }

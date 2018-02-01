@@ -6,7 +6,7 @@ using System.Threading;
 using System;
 namespace BatteryFinal
 {
-    [Activity(Label = "BatteryFinal", MainLauncher = true, Icon = "@drawable/icon", Immersive =true)]
+    [Activity(Label = "BatteryFinal", MainLauncher = true, Icon = "@drawable/icon", Immersive = true)]
     public class MainActivity : Activity
     {
         TextView FinalCharge;
@@ -35,10 +35,10 @@ namespace BatteryFinal
 
             // Set our view from the "main" layout resource
             Timer = new Clock();
-            SetContentView (Resource.Layout.Main);
+            SetContentView(Resource.Layout.Main);
             BatteryManager = new Battery();
-            FinalCharge=FindViewById<TextView>(Resource.Id.FinalCharge);
-             FinalChargeValue = FindViewById<TextView>(Resource.Id.FinalChargerValue);
+            FinalCharge = FindViewById<TextView>(Resource.Id.FinalCharge);
+            FinalChargeValue = FindViewById<TextView>(Resource.Id.FinalChargerValue);
             InitialValue = FindViewById<TextView>(Resource.Id.InitialCharge);
             InitialChargeValue = FindViewById<TextView>(Resource.Id.InitialChargerValue);
             PercentByMinute = FindViewById<TextView>(Resource.Id.PercentByMinuteValue);
@@ -50,16 +50,16 @@ namespace BatteryFinal
             Start = FindViewById<Button>(Resource.Id.Start);
             Cancel.Click += Cancel_Click;
             Start.Click += Start_Click;
-            
+
         }
 
         private void Start_Click(object sender, System.EventArgs e)
         {
-            /*Battery= new Thread(BatteryManager.Start);
-            Battery.Start();*/
-            UI = new Thread(() => UpdateUI());
-            UI.Start();
-            
+            Battery = new Thread(BatteryManager.Start);
+            Battery.Start();
+            Timer.Start();
+            UpdateUI();
+
         }
         private void UpdateTime()
         {
@@ -67,8 +67,8 @@ namespace BatteryFinal
             {
                 if (Timer.Seconds.OnChange())
                 {
-                    RunOnUiThread(() => {
-
+                    RunOnUiThread(() =>
+                    {
                         TimeValue.Text = Timer.GetFormatClock();
                     });
                 }
@@ -77,74 +77,63 @@ namespace BatteryFinal
 
         private void UpdateBattery()
         {
-            string Now = "";
-            while (true)
+            RunOnUiThread(() =>
             {
-
-                try
+                InitialChargeValue.Text = BatteryManager.InitialCharge.Value.ToString();
+                FinalChargeValue.Text = BatteryManager.ActualCharge.Value.ToString();
+            });
+            while (true)
                 {
-                    Now = BatteryManager.FinalCharge.ToString();
-                if (!FinalChargeValue.Text.Equals(Now))
-                {
+                if (BatteryManager.ActualCharge.OnChange()) { 
                     RunOnUiThread(() =>
                     {
-                        InitialChargeValue.Text = BatteryManager.InitialCharge.ToString();
-                        FinalChargeValue.Text = Now;
+                        InitialChargeValue.Text = BatteryManager.InitialCharge.Value.ToString();
+                        FinalChargeValue.Text = BatteryManager.ActualCharge.Value.ToString();
                     });
                 }
-                }
-                catch { }
             }
+            
         }
         private void UpdatePresision()
         {
-            string Now = "";
+
             while (true)
             {
-                try
+                if (BatteryManager.Status.OnChange())
                 {
-                    Now = BatteryManager.Status.ToString();
-                    if (!PrecisionValue.Text.Equals(Now))
+                    RunOnUiThread(() =>
                     {
-                        RunOnUiThread(() =>
-                        {
-                            PrecisionValue.Text = Now;
-                        });
-                    }
+                        PrecisionValue.Text = BatteryManager.Status.Value.ToString();
+                    });
                 }
-                catch { }
             }
         }
         private void UpdateSpeed()
         {
-            string Now = "";
-            try
+            while (true)
             {
-                while (true)
+                if (BatteryManager.Speed.OnChange())
                 {
-                    Now = BatteryManager.Speed.ToString();
-                    if (!PercentByMinute.Text.Equals(Now))
+                    RunOnUiThread(() =>
                     {
-                        RunOnUiThread(() =>
-                        {
-                            PercentByMinute.Text = Now+("% / Min");
-                        });
-                    }
+                        PercentByMinute.Text = BatteryManager.Speed.Value.ToString() + ("% / Min");
+                    });
                 }
             }
-            catch { }
         }
+     
+        
         private void UpdateUI()
         {
-             TimeTh= new Thread(() => UpdateTime());
-            Timer.Start();
+            TimeTh= new Thread(() => UpdateTime());
             TimeTh.Start();
-             /* ChargeNow = new Thread(() => UpdateBattery());
+            
+              ChargeNow = new Thread(() => UpdateBattery());
               ChargeNow.Start();
-              Pressision=new Thread(() => UpdatePresision());
-              Pressision.Start();
-              Speed = new Thread(() => UpdateSpeed());
-              Speed.Start();*/
+            /*Pressision=new Thread(() => UpdatePresision());
+               Pressision.Start();*/
+            Speed = new Thread(() => UpdateSpeed());
+            Speed.Start();
         }
         private void DestroyThreads()
         {

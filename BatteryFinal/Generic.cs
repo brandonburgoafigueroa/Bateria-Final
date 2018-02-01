@@ -17,8 +17,12 @@ namespace BatteryFinal
         private T _Value { set; get; }
         public
             T Value { set {
-                _Value = value;
-                IsChange = true;
+                T Temp = value;
+                if (!Temp.Equals(_Value))
+                {
+                    _Value = value;
+                    IsChange = true;
+                }
             }
             get {
                 return _Value;
