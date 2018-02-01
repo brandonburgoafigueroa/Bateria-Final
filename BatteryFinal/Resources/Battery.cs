@@ -16,56 +16,31 @@ namespace BatteryFinal.Resources
 {
     public class Clock
     {
-        public int _Minutes { set; get; }
-        public int _Seconds { set; get; }
-        public int Minutes {
-            set {
-                _Minutes = value;
-                
-            }
-            get { return _Minutes; }
-        }
-        public int Seconds {
-            set {
-                _Seconds = value;
-                _IsChange = true;
-            }
-            get {
-                return _Seconds;
-            }
-        }
-        public bool _IsChange { set; get; }
-        public bool IsChange {
-            set { _IsChange = value; }
-            get {
-                if (_IsChange)
-                {
-                    _IsChange = false;
-                    return true;
-                }
-                return _IsChange; }
-        }
+        public Generic<int> Minutes;
+        public Generic<int> Seconds;
         private Thread Thread;
         public Clock() {
             Thread = new Thread(() => Counter());
-            Minutes = 0;
-            Seconds = 0;
-            IsChange = false;
+            Minutes = new Generic<int>();
+            Seconds = new Generic<int>();
+            Minutes.Value = 0;
+            Seconds.Value = 0;
+       
         }
         public string GetFormatClock()
         {
             string min, sec;
-            if (Minutes < 10)
+            if (Minutes.Value < 10)
             {
-                min = "0" + Convert.ToString(Minutes);
+                min = "0" + Convert.ToString(Minutes.Value);
             }
-            else { min = Convert.ToString(Minutes); }
+            else { min = Convert.ToString(Minutes.Value); }
 
-            if (Seconds < 10)
+            if (Seconds.Value < 10)
             {
-                sec = "0" + Convert.ToString(Seconds);
+                sec = "0" + Convert.ToString(Seconds.Value);
             }
-            else { sec = Convert.ToString(Seconds); }
+            else { sec = Convert.ToString(Seconds.Value); }
             return min + ":" + sec;
         }
         public void Counter()
@@ -74,30 +49,41 @@ namespace BatteryFinal.Resources
             while (enabled)
             {
                 Thread.Sleep(1000);
-                Seconds++;
-                if (Seconds > 59)
+                Seconds.Value++;
+                if (Seconds.Value > 59)
                 {
-                    Seconds = 0;
-                    Minutes++;
+                    Seconds.Value = 0;
+                    Minutes.Value++;
                 }
             }
         }
-
+        public bool OnChange()
+        {
+            return Minutes.OnChange()||Seconds.OnChange();
+        }
         public void Start()
         {
-            Thread.Start();
+            if (!Thread.IsAlive)
+            {
+                Thread.Start();
+            }
+            
         }
         public void Stop()
         {
-            Thread.Abort();
+            if (Thread.IsAlive)
+            {
+                Thread.Abort();
+            }
+            
         }
         public int OnlySeconds()
         {
-            if (Seconds==0 && Minutes==0)
+            if (Seconds.Value==0 && Minutes.Value==0)
             {
                 return 1;
             }
-            return (Minutes * 60) + Seconds;
+            return (Minutes.Value * 60) + Seconds.Value;
         }
     };
     public enum Level
@@ -107,8 +93,12 @@ namespace BatteryFinal.Resources
     class Battery
     {
         public double InitialCharge { set; get; }
-        public double FinalCharge { set; get; }
+        public double _FinalCharge { set; get; }
+        public bool ActualChargeOnChange { set; get; }
+        public double FinalCharge { set { } get { return _FinalCharge; } }
+        public double _Speed { set; get; }
         public double Speed { set; get; }
+        public Level _Status { set; get; }
         public Level Status { set; get; }
         private Thread UpdateLevelActual;
         public Battery()

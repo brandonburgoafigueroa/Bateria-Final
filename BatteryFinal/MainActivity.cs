@@ -65,7 +65,7 @@ namespace BatteryFinal
         {
             while (true)
             {
-                if (Timer.IsChange)
+                if (Timer.Seconds.OnChange())
                 {
                     RunOnUiThread(() => {
 
